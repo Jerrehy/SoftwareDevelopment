@@ -1,5 +1,5 @@
 # Получение объекта приложения
-from theatre import app
+from software_app import app
 
 # Основной метод запуска приложения
 if __name__ == '__main__':
