@@ -33,6 +33,13 @@ class CompanyWorker(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.password, attempted_password)
 
     @staticmethod
+    def get_worker_by_id_with_position(id_company_worker):
+        query = db.session.query(CompanyWorker, WorkerPost)
+        query = query.join(WorkerPost, CompanyWorker.id_worker_post == WorkerPost.id_worker_post)
+        query = query.filter(CompanyWorker.id_company_worker == id_company_worker).first()
+        return query
+
+    @staticmethod
     def get_worker_by_login(login):
         return CompanyWorker.query.filter_by(login=login).first()
 

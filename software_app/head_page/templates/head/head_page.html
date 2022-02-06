@@ -10,13 +10,14 @@
     <div align="center">
         <h1 class="display-4 font-weight-normal" align="center">Начальная страница - начало рабочего процесса</h1>
         <br>
+        {% if current_user.is_authenticated: %}
         <p {{ "Здесь должно быть фото" }} </p>
-        <p class="lead font-weight-normal">Логин работника: {{ None }}</p>
-        <p class="lead font-weight-normal">ФИО работника: {{ None }}</p>
-        <p class="lead font-weight-normal">Должность: {{ None }}</p>
-        <p class="lead font-weight-normal">Заработная плата: {{ None }}</p>
-        <p class="lead font-weight-normal">Вид работы: {{ None }}</p>
-        <p class="lead font-weight-normal">Номер телефона: {{ None }}</p>
+        <p class="lead font-weight-normal">Логин работника: {{ that_user.CompanyWorker.login }}</p>
+        <p class="lead font-weight-normal">ФИО работника: {{ that_user.CompanyWorker.fio }}</p>
+        <p class="lead font-weight-normal">Должность: {{ that_user.WorkerPost.name_worker_post }}</p>
+        <p class="lead font-weight-normal">Заработная плата: {{that_user.WorkerPost.salary }}</p>
+        <p class="lead font-weight-normal">Вид работы: {{ that_user.CompanyWorker.type_work }}</p>
+        <p class="lead font-weight-normal">Номер телефона: {{ that_user.CompanyWorker.phone_number }}</p>
         <div class="row-10" style="margin-top:20px; margin-left:20px" align="center">
             <div class="col-10">
                <br>
@@ -25,14 +26,35 @@
                      <tr>
                         <td>
                             <a class="btn btn-lg btn-info" href="#">Изменить профиль</a>
-                            <a class="btn btn-lg btn-info" href="#">Мои задания</a>
+                            {% if session['post'] == 5: %}
                             <a class="btn btn-lg btn-info" href="#">Мои проекты</a>
+                            {% else: %}
+                            <a class="btn btn-lg btn-info" href="#">Мои задания</a>
+                            {% endif %}
                         </td>
                      </tr>
                   </tbody>
                </table>
             </div>
         </div>
+        {% else %}
+        <h1 class="display-4 font-weight-normal" align="center">Для дальнейшей работы войдите в систему</h1>
+        <div class="row-10" style="margin-top:20px; margin-left:20px" align="center">
+            <div class="col-10">
+               <br>
+               <table id="data" class="table table-hover table-striped">
+                  <tbody align="center">
+                     <tr>
+                        <td>
+                            <a class="btn btn-lg btn-info" href="{{ url_for('authentication.login_page') }}">Авторизация</a>
+                            <a class="btn btn-lg btn-info" href="{{ url_for('authentication.register_page') }}">Регистрация</a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
