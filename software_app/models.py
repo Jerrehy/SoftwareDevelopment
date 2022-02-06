@@ -70,6 +70,13 @@ class Project(db.Model):
     __tablename__ = 'project'
     __table_args__ = {'extend_existing': True}
 
+    @staticmethod
+    def get_all_projects():
+        query = db.session.query(Project, State, CompanyWorker)
+        query = query.join(State, Project.id_project_state == State.id_state)
+        query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker)
+        return query.all()
+
 
 class State(db.Model):
     __tablename__ = 'state'

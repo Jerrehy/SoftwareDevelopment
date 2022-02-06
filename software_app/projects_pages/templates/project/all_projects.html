@@ -1,0 +1,79 @@
+<!-- Страница с расписанием -->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'head/base.html' %}
+{% block title %}
+Расписание актёров и спектаклей
+{% endblock %}
+<!-- Оформление информационного блока -->
+{% block content %}
+<!-- Формирование таблицы с сеансами театра -->
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h2>Командные проекты</h2>
+      <br>
+      <table id="data" class="table table-hover table-bordered table-info table-striped">
+         <thead>
+            <tr>
+               <th scope="col">Название проекта</th>
+               <th scope="col">Тип проекта</th>
+               <th scope="col">Дата сдачи</th>
+               <th scope="col">Трудоёмкость</th>
+               <th scope="col">Руководитель проекта</th>
+               <th scope="col">Статус проекта</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for project in all_projects %}
+            <tr>
+               <td>{{ project.Project.name_project }}</td>
+               <td>{{ project.Project.type_project }}</td>
+               <td>{{ project.Project.completion_date }}</td>
+               <td>{{ project.Project.project_laboriousness }}</td>
+               <td>{{ project.State.name_state }}</td>
+               <td>{{ project.CompanyWorker.fio}}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
+{% endblock %}
+<!-- Скрипт для динамической таблицы: фильтрация, сортировка-->
+{% block scripts %}
+<script>
+   $(document).ready(function () {
+      $("#data").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
+{% endblock %}

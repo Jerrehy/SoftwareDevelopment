@@ -25,8 +25,10 @@ login_manager.login_message = 'Пожалуйста, выполните вход
 # Подключение узлов с методами к приложению
 from software_app.head_page.head import head
 from software_app.authentication.authentication import authentication
+from software_app.projects_pages.project_page import project
 # from app.module import route
 
 # app.register_blueprint(route)
 app.register_blueprint(head)
 app.register_blueprint(authentication)
+app.register_blueprint(project)
