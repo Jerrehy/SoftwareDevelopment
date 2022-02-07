@@ -77,6 +77,10 @@ class Project(db.Model):
         query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker)
         return query.all()
 
+    @staticmethod
+    def get_project_by_id(id_project):
+        return Project.query.filter_by(id_project=id_project).first()
+
 
 class State(db.Model):
     __tablename__ = 'state'
@@ -91,6 +95,10 @@ class Status(db.Model):
 class Task(db.Model):
     __tablename__ = 'task'
     __table_args__ = {'extend_existing': True}
+
+    @staticmethod
+    def get_all_tasks_by_project_id(id_project):
+        return Task.query.filter_by(id_project=id_project).all()
 
 
 class WorkerPost(db.Model):

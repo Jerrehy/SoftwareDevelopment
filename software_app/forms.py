@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, SelectField, HiddenField
 from wtforms.validators import ValidationError, Length, EqualTo, DataRequired
 from software_app.models import CompanyWorker
 
@@ -35,3 +35,8 @@ class LoginForm(FlaskForm):
     login = StringField(label="Логин:", validators=[DataRequired()])
     password = PasswordField(label="Пароль:", validators=[DataRequired()])
     submit = SubmitField(label='Вход')
+
+
+class IdProjectByPress(FlaskForm):
+    id_project_for_info = HiddenField()
+    submit = SubmitField(label='Задания проекта')
