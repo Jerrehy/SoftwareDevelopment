@@ -2,34 +2,32 @@
 <!-- Подключение шаблона-фундамента для страницы -->
 {% extends 'head/base.html' %}
 {% block title %}
-Наши проекты
+Расписание актёров и спектаклей
 {% endblock %}
 <!-- Оформление информационного блока -->
 {% block content %}
 <div class="row" style="margin-top:20px; margin-left:20px">
    <div class="col-8">
-      <h2>Проект "{{ project_for_view.name_project }}"</h2>
-      <h2>Дата сдачи: {{ project_for_view.completion_date }}</h2>
+      <h2>Мои проекты</h2>
       <br>
       <table id="project" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
+               <th scope="col">Название проекта</th>
+               <th scope="col">Тип проекта</th>
+               <th scope="col">Дата сдачи</th>
                <th scope="col">Трудоёмкость</th>
-               <th scope="col">Дата добавления задачи</th>
-               <th scope="col">Длительность выполнения (кол-во дней)</th>
-               <th scope="col">Описание задачи</th>
+               <th scope="col">Статус проекта</th>
             </tr>
          </thead>
          <tbody>
-            {% for task in all_tasks_project %}
+            {% for project in all_projects %}
             <tr>
-               <td>{{ task.Task.task_laboriousness }}</td>
-               <td>{{ task.Task.dateadd }}</td>
-               <td>{{ task.Task.duration }}</td>
-               <td>{{ task.Task.description }}</td>
-               <td>
-                  Здесь будет реклама
-               </td>
+               <td>{{ project.Project.name_project }}</td>
+               <td>{{ project.Project.type_project }}</td>
+               <td>{{ project.Project.completion_date }}</td>
+               <td>{{ project.Project.project_laboriousness }}</td>
+               <td>{{ project.State.name_state }}</td>
             </tr>
             {% endfor %}
          </tbody>
@@ -48,7 +46,8 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
-               { orderable: true, searchable: true }
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
             ],
             language: {
                "processing": "Подождите...",

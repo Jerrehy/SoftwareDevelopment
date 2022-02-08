@@ -1,6 +1,6 @@
-from flask import render_template, Blueprint, redirect, url_for
+from flask import render_template, Blueprint, redirect, url_for, session, flash
 from software_app.models import Project, Task
-from flask_login import login_required
+from flask_login import login_required, current_user
 from software_app.forms import IdProjectByPress
 
 
@@ -26,3 +26,15 @@ def project_info(id_project):
     all_tasks_project = Task.get_all_tasks_by_project_id(id_project)
     return render_template('project/all_tasks_project.html', project_for_view=project_for_view,
                            all_tasks_project=all_tasks_project)
+
+
+@project.route('/my_projects', methods=['GET', 'POST'])
+@login_required
+def supervisor_view():
+    if session['post'] == 5:
+        all_projects = Project.get_all_projects_by_id_supervisor(current_user.get_id())
+
+        return render_template('project/supervisor_projects.html', all_projects=all_projects)
+    else:
+        flash('У вас недостаточно прав для доступа к этой странице', category='danger')
+        return redirect(url_for('head.set_profile_page'))

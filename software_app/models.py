@@ -74,12 +74,20 @@ class Project(db.Model):
     def get_all_projects():
         query = db.session.query(Project, State, CompanyWorker)
         query = query.join(State, Project.id_project_state == State.id_state)
-        query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker)
-        return query.all()
+        query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker).all()
+        return query
 
     @staticmethod
     def get_project_by_id(id_project):
         return Project.query.filter_by(id_project=id_project).first()
+
+    @staticmethod
+    def get_all_projects_by_id_supervisor(id_supervisor):
+        query = db.session.query(Project, State, CompanyWorker)
+        query = query.join(State, Project.id_project_state == State.id_state)
+        query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker)
+        query = query.filter(Project.id_supervisor == id_supervisor).all()
+        return query
 
 
 class State(db.Model):
@@ -98,7 +106,11 @@ class Task(db.Model):
 
     @staticmethod
     def get_all_tasks_by_project_id(id_project):
-        return Task.query.filter_by(id_project=id_project).all()
+        query = db.session.query(Task, WorkerExecution)
+        query = query.outerjoin(WorkerExecution)
+        query = query.filter(None == WorkerExecution.id_task)
+        query = query.filter(Task.id_project == id_project)
+        return query.all()
 
 
 class WorkerPost(db.Model):

@@ -27,7 +27,7 @@
                         <td>
                             <a class="btn btn-lg btn-info" href="#">Изменить профиль</a>
                             {% if session['post'] == 5: %}
-                            <a class="btn btn-lg btn-info" href="#">Мои проекты</a>
+                            <a class="btn btn-lg btn-info" href="{{ url_for('project.supervisor_view') }}">Мои проекты</a>
                             {% else: %}
                             <a class="btn btn-lg btn-info" href="#">Мои задания</a>
                             {% endif %}
