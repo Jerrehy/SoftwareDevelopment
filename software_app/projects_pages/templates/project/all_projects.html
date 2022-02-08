@@ -29,8 +29,8 @@
                <td>{{ project.Project.type_project }}</td>
                <td>{{ project.Project.completion_date }}</td>
                <td>{{ project.Project.project_laboriousness }}</td>
+               <td>{{ project.CompanyWorker.fio }}</td>
                <td>{{ project.State.name_state }}</td>
-               <td>{{ project.CompanyWorker.fio}}</td>
                <td>
                   <form method="post" action="{{url_for('project.project_view')}}">
                      {{ press_form.id_project_for_info(value=project.Project.id_project) }}
@@ -41,6 +41,7 @@
             {% endfor %}
          </tbody>
       </table>
+      
    </div>
 </div>
 {% endblock %}

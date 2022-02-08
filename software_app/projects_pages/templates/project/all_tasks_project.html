@@ -11,6 +11,7 @@
       <h2>Проект "{{ project_for_view.name_project }}"</h2>
       <h2>Дата сдачи: {{ project_for_view.completion_date }}</h2>
       <br>
+      {% if all_tasks_project %}
       <table id="project" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
@@ -34,6 +35,9 @@
             {% endfor %}
          </tbody>
       </table>
+      {% else: %}
+      <p>Пока в проект не добавили задачи</p>
+      {% endif %}
    </div>
 </div>
 {% endblock %}

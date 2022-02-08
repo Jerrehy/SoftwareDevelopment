@@ -51,3 +51,12 @@ def supervisor_view():
     else:
         flash('У вас недостаточно прав для доступа к этой странице', category='danger')
         return redirect(url_for('head.set_profile_page'))
+
+
+# @project.route('/my-project-info/<int:id_project>', methods=['GET', 'POST'])
+# @login_required
+# def project_info(id_project):
+#     project_for_view = Project.get_project_by_id(id_project)
+#     all_tasks_project = Task.get_all_tasks_by_project_id(id_project)
+#     return render_template('project/all_tasks_project.html', project_for_view=project_for_view,
+#                            all_tasks_project=all_tasks_project)
