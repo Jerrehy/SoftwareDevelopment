@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, SelectField, HiddenField, \
+    DateField, IntegerField
 from wtforms.validators import ValidationError, Length, EqualTo, DataRequired
 from software_app.models import CompanyWorker
 
@@ -40,3 +41,19 @@ class LoginForm(FlaskForm):
 class IdProjectByPress(FlaskForm):
     id_project_for_info = HiddenField()
     submit = SubmitField(label='Задания проекта')
+
+
+class AddProject(FlaskForm):
+    project_name = StringField(label='Название проекта', validators=[DataRequired()])
+    project_type = SelectField(label='Тип проекта', choices=['монопроект', 'мультипроект', 'мегапроект'])
+    deadline = DateField(label='Дедлайн', validators=[DataRequired()])
+    laboriousness = IntegerField(label='Трудоёмкость', validators=[DataRequired()])
+    project_state = SelectField(label='Состояние проекта', choices=[])
+    submit_add = SubmitField(label='Добавить проект')
+
+
+class AddTask(FlaskForm):
+    description = TextAreaField(label='Описание проекта', validators=[DataRequired()])
+    date_now = DateField(label='Дата добавления', validators=[DataRequired()])
+    duration = IntegerField(label='Длительность в днях', validators=[DataRequired()])
+    submit_add = SubmitField(label='Добавить задачу')

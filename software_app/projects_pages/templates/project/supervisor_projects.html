@@ -2,13 +2,15 @@
 <!-- Подключение шаблона-фундамента для страницы -->
 {% extends 'head/base.html' %}
 {% block title %}
-Расписание актёров и спектаклей
+Пользовательские проекты
 {% endblock %}
 <!-- Оформление информационного блока -->
 {% block content %}
 <div class="row" style="margin-top:20px; margin-left:20px">
    <div class="col-8">
       <h2>Мои проекты</h2>
+      <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#ModalAddProject">Добавить проект</button>
+      <br>
       <br>
       <table id="project" class="table table-hover table-bordered table-info table-striped">
          <thead>
@@ -32,6 +34,41 @@
             {% endfor %}
          </tbody>
       </table>
+   </div>
+</div>
+<div id="ModalAddProject" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title text-secondary">Добавление нового проекта</h4>
+         </div>
+         <div class="modal-body">
+            <form method="POST" class="form-addding" style="color:black">
+               {{ form_add_project.hidden_tag() }}
+
+               {{ form_add_project.project_name.label() }}
+               {{ form_add_project.project_name(class="form-control") }}
+               
+               {{ form_add_project.project_type.label() }}
+               {{ form_add_project.project_type(class="form-control") }}
+
+               {{ form_add_project.deadline.label() }}
+               {{ form_add_project.deadline(class="form-control") }}
+
+               {{ form_add_project.laboriousness.label() }}
+               {{ form_add_project.laboriousness(class="form-control") }}
+
+               {{ form_add_project.project_state.label() }}
+               {{ form_add_project.project_state(class="form-control") }}
+
+               <br>
+               {{ form_add_project.submit_add(class="btn btn-lg btn-block btn-dark") }}
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-light" data-dismiss="modal">Закрыть</button>
+      </div>
    </div>
 </div>
 {% endblock %}

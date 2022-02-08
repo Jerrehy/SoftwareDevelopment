@@ -89,15 +89,42 @@ class Project(db.Model):
         query = query.filter(Project.id_supervisor == id_supervisor).all()
         return query
 
+    @staticmethod
+    def add_project(name_project, type_project, completion_date, project_laboriousness, id_supervisor,
+                    id_project_state):
+        new_project = Project(name_project=name_project, type_project=type_project, completion_date=completion_date,
+                              project_laboriousness=project_laboriousness, id_supervisor=id_supervisor,
+                              id_project_state=id_project_state)
+
+        try:
+            db.session.add(new_project)
+            db.session.commit()
+            flash("Новый проект был успешно добавлен", category='success')
+        except:
+            db.session.rollback()
+            flash("Возникли проблемы с добавление нового проекта", category='danger')
+
 
 class State(db.Model):
     __tablename__ = 'state'
     __table_args__ = {'extend_existing': True}
 
+    @staticmethod
+    def get_all_state():
+        return State.query.all()
+
+    @staticmethod
+    def get_state_by_name(name_state):
+        return State.query.filter_by(name_state=name_state).first()
+
 
 class Status(db.Model):
     __tablename__ = 'status'
     __table_args__ = {'extend_existing': True}
+
+    @staticmethod
+    def get_all_status():
+        return Status.query.all()
 
 
 class Task(db.Model):
