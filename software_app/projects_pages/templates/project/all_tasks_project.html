@@ -11,8 +11,9 @@
       <h2>Проект "{{ project_for_view.name_project }}"</h2>
       <h2>Дата сдачи: {{ project_for_view.completion_date }}</h2>
       <br>
-      {% if all_tasks_project %}
-      <table id="project" class="table table-hover table-bordered table-info table-striped">
+      <h4>Свободные задания</h4>
+      <br>
+      <table id="project_task_free" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
                <th scope="col">Трудоёмкость</th>
@@ -22,22 +23,60 @@
             </tr>
          </thead>
          <tbody>
-            {% for task in all_tasks_project %}
+            {% for task in all_free_tasks_project %}
             <tr>
                <td>{{ task.Task.task_laboriousness }}</td>
                <td>{{ task.Task.dateadd }}</td>
                <td>{{ task.Task.duration }}</td>
                <td>{{ task.Task.description }}</td>
                <td>
-                  Здесь будет реклама
+                  <form method="post" action="{{url_for('project.project_info'), id_project=project_for_view.id_project}}">
+                     {{ activation_form.id_task_for_info(value=task.Task.id_task) }}
+                     {{ activation_form.duration(value=task.Task.duration) }}
+                     <br>
+                     {{ activation_form.start_date.label() }}
+                     {{ activation_form.start_date(class="form-control") }}
+                     <br>
+                     {{ activation_form.iteration.label() }}
+                     {{ activation_form.iteration(class="form-control") }}
+                     <br>
+                     {{ activation_form.submit_add(class="btn btn-lg btn-block btn-warning") }}
+                  </form>
                </td>
             </tr>
             {% endfor %}
          </tbody>
       </table>
-      {% else: %}
-      <p>Пока в проект не добавили задачи</p>
-      {% endif %}
+   </div>
+</div>
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+      <h4>Задания в исполнении</h4>
+      <br>
+      <table id="project_task_not_free" class="table table-hover table-bordered table-info table-striped">
+         <thead>
+            <tr>
+               <th scope="col">Трудоёмкость</th>
+               <th scope="col">Дата добавления задачи</th>
+               <th scope="col">Длительность выполнения (кол-во дней)</th>
+               <th scope="col">Описание задачи</th>
+               <th scope="col">Исполнитель</th>
+               <th scope="col">Статус задачи</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for task in all_not_free_tasks_project %}
+            <tr>
+               <td>{{ task.Task.task_laboriousness }}</td>
+               <td>{{ task.Task.dateadd }}</td>
+               <td>{{ task.Task.duration }}</td>
+               <td>{{ task.Task.description }}</td>
+               <td>{{ task.CompanyWorker.fio }}</td>
+               <td>{{ task.Status.name_status }}</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
    </div>
 </div>
 {% endblock %}
@@ -46,9 +85,47 @@
 {% block scripts %}
 <script>
    $(document).ready(function () {
-      $("#project").DataTable(
+      $("#project_task_free").DataTable(
          {
             columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
+            ],
+            language: {
+               "processing": "Подождите...",
+               "search": "Поиск:",
+               "lengthMenu": "Показать _MENU_ записей",
+               "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+               "infoEmpty": "Записи с 0 до 0 из 0 записей",
+               "infoFiltered": "(отфильтровано из _MAX_ записей)",
+               "infoPostFix": "",
+               "loadingRecords": "Загрузка записей...",
+               "zeroRecords": "Записи отсутствуют.",
+               "emptyTable": "В таблице отсутствуют данные",
+               "paginate": {
+                  "first": "Первая",
+                  "previous": "Предыдущая",
+                  "next": "Следующая",
+                  "last": "Последняя"
+               },
+               "aria": {
+                  "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                  "sortDescending": ": активировать для сортировки столбца по убыванию"
+               }
+            }
+         });
+   });
+</script>
+<script>
+   $(document).ready(function () {
+      $("#project_task_not_free").DataTable(
+         {
+            columns: [
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },

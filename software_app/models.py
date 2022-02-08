@@ -65,6 +65,19 @@ class WorkerExecution(db.Model):
     __tablename__ = 'worker_execution'
     __table_args__ = {'extend_existing': True}
 
+    @staticmethod
+    def add_execution(id_project, id_task, id_executor, iteration_number, start_date, finish_date, id_status):
+        new_execution = WorkerExecution(id_project=id_project, id_task=id_task, id_executor=id_executor,
+                                        iteration_number=iteration_number, start_date=start_date,
+                                        finish_date=finish_date, id_status=id_status)
+        try:
+            db.session.add(new_execution)
+            db.session.commit()
+            flash("Задача была взята в обработку.", category='success')
+        except:
+            db.session.rollback()
+            flash("Произошла ошибка при обработке задачи. Повторите попытку.", category='danger')
+
 
 class Project(db.Model):
     __tablename__ = 'project'
@@ -132,10 +145,19 @@ class Task(db.Model):
     __table_args__ = {'extend_existing': True}
 
     @staticmethod
-    def get_all_tasks_by_project_id(id_project):
+    def get_all_free_tasks_by_project_id(id_project):
         query = db.session.query(Task, WorkerExecution)
         query = query.outerjoin(WorkerExecution)
         query = query.filter(None == WorkerExecution.id_task)
+        query = query.filter(Task.id_project == id_project)
+        return query.all()
+
+    @staticmethod
+    def get_all_not_free_tasks_by_project_id(id_project):
+        query = db.session.query(Task, WorkerExecution, CompanyWorker, Status)
+        query = query.join(WorkerExecution, Task.id_task == WorkerExecution.id_task)
+        query = query.join(CompanyWorker, WorkerExecution.id_executor == CompanyWorker.id_company_worker)
+        query = query.join(Status, WorkerExecution.id_status == Status.id_status)
         query = query.filter(Task.id_project == id_project)
         return query.all()
 

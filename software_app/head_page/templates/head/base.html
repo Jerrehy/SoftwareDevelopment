@@ -29,9 +29,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('head.set_profile_page') }}"> Профиль </a>
         </li>
+        {% if session['post'] != 5 %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('project.project_view') }}"> Проeкты </a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('authentication.logout_page') }}"> Выход </a>
         </li>
