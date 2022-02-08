@@ -139,6 +139,10 @@ class Status(db.Model):
     def get_all_status():
         return Status.query.all()
 
+    @staticmethod
+    def get_status_by_name(name_status):
+        return Status.query.filter_by(name_status=name_status).first()
+
 
 class Task(db.Model):
     __tablename__ = 'task'

@@ -47,7 +47,6 @@ class IdProjectAndTaskByPress(FlaskForm):
     id_task_for_info = HiddenField()
     duration_for_info = HiddenField()
     start_date = DateField(label='Дата начала выполнения')
-    status = SelectField(label='Статус', choices=[])
     iteration = IntegerField(label='Номер иттерации', validators=[NumberRange(min=0, max=7)])
     submit_add = SubmitField(label='Начать выполнение')
 

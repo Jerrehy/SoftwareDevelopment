@@ -7,7 +7,7 @@
 <!-- Оформление информационного блока -->
 {% block content %}
 <div class="row" style="margin-top:20px; margin-left:20px">
-   <div class="col-8">
+   <div class="col-10">
       <h2>Проект "{{ project_for_view.name_project }}"</h2>
       <h2>Дата сдачи: {{ project_for_view.completion_date }}</h2>
       <br>
@@ -30,15 +30,15 @@
                <td>{{ task.Task.duration }}</td>
                <td>{{ task.Task.description }}</td>
                <td>
-                  <form method="post" action="{{url_for('project.project_info'), id_project=project_for_view.id_project}}">
+                  <form method="post" action="{{url_for('project.project_info', id_project=project_for_view.id_project)}}">
                      {{ activation_form.id_task_for_info(value=task.Task.id_task) }}
-                     {{ activation_form.duration(value=task.Task.duration) }}
+                     {{ activation_form.duration_for_info(value=task.Task.duration) }}
                      <br>
                      {{ activation_form.start_date.label() }}
                      {{ activation_form.start_date(class="form-control") }}
                      <br>
                      {{ activation_form.iteration.label() }}
-                     {{ activation_form.iteration(class="form-control") }}
+                     {{ activation_form.iteration(placeholder_="От 1 до 7", class="form-control") }}
                      <br>
                      {{ activation_form.submit_add(class="btn btn-lg btn-block btn-warning") }}
                   </form>
@@ -50,7 +50,7 @@
    </div>
 </div>
 <div class="row" style="margin-top:20px; margin-left:20px">
-   <div class="col-8">
+   <div class="col-10">
       <h4>Задания в исполнении</h4>
       <br>
       <table id="project_task_not_free" class="table table-hover table-bordered table-info table-striped">

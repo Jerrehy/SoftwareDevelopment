@@ -26,29 +26,31 @@ def project_view():
 @project.route('/project-info/<int:id_project>', methods=['GET', 'POST'])
 @login_required
 def project_info(id_project):
-    activation_form = IdProjectAndTaskByPress()
+    if session['post'] != 5:
+        activation_form = IdProjectAndTaskByPress()
 
-    project_for_view = Project.get_project_by_id(id_project)
-    all_free_tasks_project = Task.get_all_free_tasks_by_project_id(id_project)
-    all_not_free_tasks_project = Task.get_all_not_free_tasks_by_project_id(id_project)
+        project_for_view = Project.get_project_by_id(id_project)
+        all_free_tasks_project = Task.get_all_free_tasks_by_project_id(id_project)
+        all_not_free_tasks_project = Task.get_all_not_free_tasks_by_project_id(id_project)
 
-    # for_status_form = Status.get_all_status()
-    # activation_form.status.choices =
+        if activation_form.submit_add.data:
 
-    if activation_form.validate_on_submit():
-        task_for_add_execution = activation_form.id_task_for_info.data
+            date_summary = activation_form.start_date.data
+            result = date_summary + timedelta(days=int(activation_form.duration_for_info.data))
+            result = result.strftime('%Y-%m-%d')
 
-        date_summary = activation_form.start_date.data
-        result = date_summary + timedelta(days=activation_form.duration_for_info.data)
-        result = result.strftime('%Y-%m-%d')
+            WorkerExecution.add_execution(id_project, activation_form.id_task_for_info.data,
+                                          current_user.get_id(), activation_form.iteration.data,
+                                          activation_form.start_date.data, result, 2)
 
-        # WorkerExecution.add_execution(id_project, activation_form.id_task_for_info.data,
-        #                               current_user.get_id(), activation_form.start_date.data,
-        #                               result, )
+            return redirect(url_for('project.project_info', id_project=id_project))
 
-    return render_template('project/all_tasks_project.html', project_for_view=project_for_view,
-                           all_free_tasks_project=all_free_tasks_project, activation_form=activation_form,
-                           all_not_free_tasks_project=all_not_free_tasks_project)
+        return render_template('project/all_tasks_project.html', project_for_view=project_for_view,
+                               all_free_tasks_project=all_free_tasks_project, activation_form=activation_form,
+                               all_not_free_tasks_project=all_not_free_tasks_project)
+    else:
+        flash('У вас недостаточно прав для доступа к этой странице', category='danger')
+        return redirect(url_for('head.set_profile_page'))
 
 
 @project.route('/my_projects', methods=['GET', 'POST'])
@@ -75,11 +77,3 @@ def supervisor_view():
         flash('У вас недостаточно прав для доступа к этой странице', category='danger')
         return redirect(url_for('head.set_profile_page'))
 
-
-# @project.route('/my-project-info/<int:id_project>', methods=['GET', 'POST'])
-# @login_required
-# def project_info(id_project):
-#     project_for_view = Project.get_project_by_id(id_project)
-#     all_tasks_project = Task.get_all_tasks_by_project_id(id_project)
-#     return render_template('project/all_tasks_project.html', project_for_view=project_for_view,
-#                            all_tasks_project=all_tasks_project)
