@@ -2,41 +2,40 @@
 <!-- Подключение шаблона-фундамента для страницы -->
 {% extends 'head/base.html' %}
 {% block title %}
-Расписание актёров и спектаклей
+Мои личные задания
 {% endblock %}
 <!-- Оформление информационного блока -->
 {% block content %}
 <div class="row" style="margin-top:20px; margin-left:20px">
-   <div class="col-8">
-      <h2>Командные проекты</h2>
+   <div class="col-10">
+      <h2>Мои задания</h2>
       <br>
       <table id="project" class="table table-hover table-bordered table-info table-striped">
          <thead>
             <tr>
                <th scope="col">Название проекта</th>
-               <th scope="col">Тип проекта</th>
-               <th scope="col">Дата сдачи</th>
-               <th scope="col">Трудоёмкость</th>
+               <th scope="col">Дата добавления задачи</th>
                <th scope="col">Руководитель проекта</th>
-               <th scope="col">Статус проекта</th>
+               <th scope="col">Номер итерации задачи</th>
+               <th scope="col">Трудоёмкость задачи</th>
+               <th scope="col">Описание задачи</th>
+               <th scope="col">Дата начала оформления задачи</th>
+               <th scope="col">Дата окончания оформления задачи</th>
+               <th scope="col">Статус задачи</th>
             </tr>
          </thead>
          <tbody>
-            {% for project in all_projects %}
-            {{ press_form.hidden_tag() }}
+            {% for task in all_worker_tasks %}
             <tr>
-               <td>{{ project.Project.name_project }}</td>
-               <td>{{ project.Project.type_project }}</td>
-               <td>{{ project.Project.completion_date }}</td>
-               <td>{{ project.Project.project_laboriousness }}</td>
-               <td>{{ project.State.name_state }}</td>
-               <td>{{ project.CompanyWorker.fio}}</td>
-               <td>
-                  <form method="post" action="{{url_for('project.project_view')}}">
-                     {{ press_form.id_project_for_info(value=project.Project.id_project) }}
-                     {{ press_form.submit(class="btn btn-lg btn-block btn-warning") }}
-                  </form>
-               </td>
+               <td>{{ task.Project.name_project }}</td>
+               <td>{{ task.Project.completion_date }}</td>
+               <td>{{ task.CompanyWorker.fio }}</td>
+               <td>{{ task.WorkerExecution.iteration_number }}</td>
+               <td>{{ task.Task.task_laboriousness }}</td>
+               <td>{{ task.Task.description }}</td>
+               <td>{{ task.WorkerExecution.start_date }}</td>
+               <td>{{ task.WorkerExecution.finish_date}}</td>
+               <td>{{ task.Status.name_status}}</td>
             </tr>
             {% endfor %}
          </tbody>
@@ -58,7 +57,8 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
-               { orderable: false, searchable: false }
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true }
             ],
             language: {
                "processing": "Подождите...",

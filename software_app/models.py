@@ -78,6 +78,16 @@ class WorkerExecution(db.Model):
             db.session.rollback()
             flash("Произошла ошибка при обработке задачи. Повторите попытку.", category='danger')
 
+    @staticmethod
+    def get_all_task_by_id_executor(id_executor):
+        query = db.session.query(WorkerExecution, Project, CompanyWorker, Status, Task)
+        query = query.join(Project, WorkerExecution.id_project == Project.id_project)
+        query = query.join(CompanyWorker, Project.id_supervisor == CompanyWorker.id_company_worker)
+        query = query.join(Status, Status.id_status == WorkerExecution.id_status)
+        query = query.join(Task, Task.id_task == WorkerExecution.id_task)
+        query = query.filter(WorkerExecution.id_executor == id_executor)
+        return query.all()
+
 
 class Project(db.Model):
     __tablename__ = 'project'

@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, redirect, url_for, session, flash
 from software_app.models import Project, Task, State, WorkerExecution, Status
 from flask_login import login_required, current_user
 from software_app.forms import IdProjectByPress, AddProject, IdProjectAndTaskByPress
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 project = Blueprint('project', __name__, template_folder="templates")
@@ -20,6 +20,7 @@ def project_view():
 
         return render_template('project/all_projects.html', all_projects=all_projects, press_form=press_form)
     else:
+        flash('У вас недостаточно прав для доступа к этой странице', category='danger')
         return redirect(url_for('head.set_profile_page'))
 
 
