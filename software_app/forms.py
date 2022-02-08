@@ -47,7 +47,7 @@ class IdProjectAndTaskByPress(FlaskForm):
     id_task_for_info = HiddenField()
     duration_for_info = HiddenField()
     start_date = DateField(label='Дата начала выполнения')
-    iteration = IntegerField(label='Номер иттерации', validators=[NumberRange(min=0, max=7)])
+    iteration = IntegerField(label='Номер итерации', validators=[NumberRange(min=0, max=7)])
     submit_add = SubmitField(label='Начать выполнение')
 
 
@@ -65,3 +65,15 @@ class AddTask(FlaskForm):
     date_now = DateField(label='Дата добавления', validators=[DataRequired()])
     duration = IntegerField(label='Длительность в днях', validators=[DataRequired()])
     submit_add = SubmitField(label='Добавить задачу')
+
+
+class UpdateTaskExecution(FlaskForm):
+    id_task_for_update = HiddenField()
+    new_status_task = SelectField(label='Текущее состояние задания', choices=[])
+    new_iteration = IntegerField(label='Новый номер итерации', validators=[NumberRange(min=0, max=7)])
+    submit_update = SubmitField(label='Обновить задачу')
+
+
+class RejectTaskExecution(FlaskForm):
+    id_task_for_reject = HiddenField()
+    submit_reject = SubmitField(label='Отказаться от задачи')

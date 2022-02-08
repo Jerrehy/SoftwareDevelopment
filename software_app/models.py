@@ -88,6 +88,28 @@ class WorkerExecution(db.Model):
         query = query.filter(WorkerExecution.id_executor == id_executor)
         return query.all()
 
+    @staticmethod
+    def update_task_execution_by_id(id_task, id_status, iteration_number):
+        try:
+            execute_task_for_update = WorkerExecution.query.filter_by(id_task=id_task).first()
+            execute_task_for_update.id_status = id_status
+            execute_task_for_update.iteration_number = iteration_number
+            db.session.commit()
+            flash("Статус и итерация задачи были успешно изменены", category='success')
+        except:
+            db.session.rollback()
+            flash("Изменения не были внесены", category='danger')
+
+    @staticmethod
+    def delete_task_execution_by_id(id_task):
+        try:
+            WorkerExecution.query.filter_by(id_task=id_task).delete()
+            db.session.commit()
+            flash("Отказ от задания был успешно выполнен", category='success')
+        except:
+            db.session.rollback()
+            flash("Удаление прошло неудачно", category='danger')
+
 
 class Project(db.Model):
     __tablename__ = 'project'

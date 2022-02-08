@@ -36,6 +36,22 @@
                <td>{{ task.WorkerExecution.start_date }}</td>
                <td>{{ task.WorkerExecution.finish_date}}</td>
                <td>{{ task.Status.name_status}}</td>
+               <td>
+                  <form method="post" action="{{url_for('task.task_view')}}">
+                     {{ update_form.id_task_for_update(value=task.WorkerExecution.id_task) }}
+                     <br>
+                     {{ update_form.new_status_task.label() }}
+                     {{ update_form.new_status_task(class="form-control") }}
+                     <br>
+                     {{ update_form.new_iteration.label() }}
+                     {{ update_form.new_iteration(placeholder_="От 1 до 7", class="form-control") }}
+                     <br>
+                     {{ update_form.submit_update(class="btn btn-lg btn-block btn-warning") }}
+                     <br>
+                     {{ reject_form.id_task_for_reject(value=task.WorkerExecution.id_task) }}
+                     {{ reject_form.submit_reject(class="btn btn-lg btn-block btn-danger") }}
+                  </form>
+               </td>
             </tr>
             {% endfor %}
          </tbody>
@@ -58,7 +74,9 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
-               { orderable: true, searchable: true }
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: false, searchable: false }
             ],
             language: {
                "processing": "Подождите...",
