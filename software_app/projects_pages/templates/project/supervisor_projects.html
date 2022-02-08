@@ -30,6 +30,19 @@
                <td>{{ project.Project.completion_date }}</td>
                <td>{{ project.Project.project_laboriousness }}</td>
                <td>{{ project.State.name_state }}</td>
+               <td>
+                  <form method="post" action="{{url_for('project.supervisor_view')}}">
+                     {{ form_update_project.id_project_for_update(value=project.Project.id_project) }}
+                     <br>
+                     {{ form_update_project.new_state_project.label() }}
+                     {{ form_update_project.new_state_project(class="form-control") }}
+                     <br>
+                     {{ form_update_project.submit_update(class="btn btn-lg btn-block btn-warning") }}
+                     <br>
+                     {{ form_close_project.id_project_for_close(value=project.Project.id_project) }}
+                     {{ form_close_project.submit_close(class="btn btn-lg btn-block btn-danger") }}
+                  </form>
+               </td>
             </tr>
             {% endfor %}
          </tbody>
@@ -85,6 +98,7 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
+               { orderable: false, searchable: false }
             ],
             language: {
                "processing": "Подождите...",

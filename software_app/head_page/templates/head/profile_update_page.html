@@ -1,0 +1,22 @@
+<!-- Страница профиля пользователя/Стартовая страница-->
+<!-- Подключение шаблона-фундамента для страницы -->
+{% extends 'head/base.html' %}
+{% block title %}
+Изменение профиля
+{% endblock %}
+<!-- Отображение информации об авторизованном пользователе -->
+{% block content %}
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-left bg-dark" style="color:white">
+    <div align="center">
+        <h1 class="display-4 font-weight-normal" align="center">Начальная страница - начало рабочего процесса</h1>
+        <br>
+        <p {{ "Здесь должно быть фото" }} </p>
+        <p class="lead font-weight-normal">Логин работника: {{ that_user.CompanyWorker.login }}</p>
+        <p class="lead font-weight-normal">ФИО работника: {{ that_user.CompanyWorker.fio }}</p>
+        <p class="lead font-weight-normal">Должность: {{ that_user.WorkerPost.name_worker_post }}</p>
+        <p class="lead font-weight-normal">Заработная плата: {{that_user.WorkerPost.salary }}</p>
+        <p class="lead font-weight-normal">Вид работы: {{ that_user.CompanyWorker.type_work }}</p>
+        <p class="lead font-weight-normal">Номер телефона: {{ that_user.CompanyWorker.phone_number }}</p>
+    </div>
+</div>
+{% endblock %}

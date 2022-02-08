@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, redirect, url_for, session, flash
-from software_app.models import Project, Task, State, WorkerExecution, Status
+from software_app.models import Project, Task, State, WorkerExecution
 from flask_login import login_required, current_user
-from software_app.forms import IdProjectByPress, AddProject, IdProjectAndTaskByPress
+from software_app.forms import IdProjectByPress, AddProject, IdProjectAndTaskByPress, UpdateProject, CloseProject
 from datetime import timedelta
 
 
@@ -59,9 +59,12 @@ def project_info(id_project):
 def supervisor_view():
     if session['post'] == 5:
         form_add_project = AddProject()
+        form_update_project = UpdateProject()
+        form_close_project = CloseProject()
 
         projects_states = State.get_all_state()
         form_add_project.project_state.choices = [i.name_state for i in projects_states]
+        form_update_project.new_state_project.choices = [i.name_state for i in projects_states]
 
         all_projects = Project.get_all_projects_by_id_supervisor(current_user.get_id())
 
@@ -72,8 +75,18 @@ def supervisor_view():
                                 project_state.id_state)
             return redirect(url_for('project.supervisor_view'))
 
+        elif form_update_project.submit_update.data:
+            new_state_for_project = State.get_state_by_name(form_update_project.new_state_project.data)
+            Project.update_project_by_id(form_update_project.id_project_for_update.data, new_state_for_project.id_state)
+            return redirect(url_for('project.supervisor_view'))
+
+        elif form_close_project.submit_close.data:
+            Project.delete_project_by_id(form_close_project.id_project_for_close.data)
+            return redirect(url_for('project.supervisor_view'))
+
         return render_template('project/supervisor_projects.html', all_projects=all_projects,
-                               form_add_project=form_add_project)
+                               form_add_project=form_add_project, form_update_project=form_update_project,
+                               form_close_project=form_close_project)
     else:
         flash('У вас недостаточно прав для доступа к этой странице', category='danger')
         return redirect(url_for('head.set_profile_page'))

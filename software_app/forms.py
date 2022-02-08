@@ -69,7 +69,7 @@ class AddTask(FlaskForm):
 
 class UpdateTaskExecution(FlaskForm):
     id_task_for_update = HiddenField()
-    new_status_task = SelectField(label='Текущее состояние задания', choices=[])
+    new_status_task = SelectField(label='Новое состояние задания', choices=[])
     new_iteration = IntegerField(label='Новый номер итерации', validators=[NumberRange(min=0, max=7)])
     submit_update = SubmitField(label='Обновить задачу')
 
@@ -77,3 +77,14 @@ class UpdateTaskExecution(FlaskForm):
 class RejectTaskExecution(FlaskForm):
     id_task_for_reject = HiddenField()
     submit_reject = SubmitField(label='Отказаться от задачи')
+
+
+class UpdateProject(FlaskForm):
+    id_project_for_update = HiddenField()
+    new_state_project = SelectField(label='Новый статус проекта', choices=[])
+    submit_update = SubmitField(label='Обновить проект')
+
+
+class CloseProject(FlaskForm):
+    id_project_for_close = HiddenField()
+    submit_close = SubmitField(label='Удалить проект')

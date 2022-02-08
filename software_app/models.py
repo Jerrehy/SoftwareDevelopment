@@ -149,6 +149,27 @@ class Project(db.Model):
             db.session.rollback()
             flash("Возникли проблемы с добавление нового проекта", category='danger')
 
+    @staticmethod
+    def update_project_by_id(id_project, id_state):
+        try:
+            project_for_update = Project.query.filter_by(id_project=id_project).first()
+            project_for_update.id_project_state = id_state
+            db.session.commit()
+            flash("Состояние проекта было успешно изменено", category='success')
+        except:
+            db.session.rollback()
+            flash("Изменения не были внесены", category='danger')
+
+    @staticmethod
+    def delete_project_by_id(id_project):
+        try:
+            Project.query.filter_by(id_project=id_project).delete()
+            db.session.commit()
+            flash("Проект был успешно закрыт", category='success')
+        except:
+            db.session.rollback()
+            flash("Произошла ошибка при закрытии проекта", category='danger')
+
 
 class State(db.Model):
     __tablename__ = 'state'
