@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, FileField, SelectField, HiddenField, \
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, HiddenField, \
     DateField, IntegerField
 from wtforms.validators import ValidationError, Length, EqualTo, DataRequired, NumberRange
 from software_app.models import CompanyWorker
@@ -24,11 +24,18 @@ class RegisterForm(FlaskForm):
     phone_number = StringField(label='Телефон:')
     position = SelectField(label='Должность:', choices=[])
     type_work = SelectField(label='Тип работы:', choices=['В офисе', 'Из дома'])
-    user_photo = FileField(label='Фото пользователя')
+    user_photo = TextAreaField(label='Фото пользователя')
     login = StringField(label='Логин:', validators=[Length(min=6, max=20), DataRequired()])
     password1 = PasswordField(label='Пароль:', validators=[Length(min=8), DataRequired()])
     password2 = PasswordField(label='Подтвердить пароль:', validators=[EqualTo('password1'), DataRequired()])
     submit = SubmitField(label='Создать аккаунт')
+
+
+class UpdateWorker(FlaskForm):
+    fio = TextAreaField(label='Новое ФИО:', validators=[DataRequired()])
+    phone_number = StringField(label='Новый телефон:')
+    user_photo = TextAreaField(label='Новое фото пользователя')
+    submit_update = SubmitField(label='Обновить аккаунт')
 
 
 # Форма авторизации на сайте

@@ -40,6 +40,10 @@ class CompanyWorker(db.Model, UserMixin):
         return query
 
     @staticmethod
+    def get_worker_by_id(id_company_worker):
+        return CompanyWorker.query.filter_by(id_company_worker=id_company_worker).first()
+
+    @staticmethod
     def get_worker_by_login(login):
         return CompanyWorker.query.filter_by(login=login).first()
 
@@ -59,6 +63,19 @@ class CompanyWorker(db.Model, UserMixin):
         except:
             db.session.rollback()
             flash("Произошла ошибка при добавлении сотрудника. Повторите попытку.", category='danger')
+
+    @staticmethod
+    def update_company_worker(id_company_worker, fio, phone_number, photo):
+        try:
+            worker_for_update = CompanyWorker.get_worker_by_id(id_company_worker)
+            worker_for_update.fio = fio
+            worker_for_update.phone_number = phone_number
+            worker_for_update.photo = photo
+            db.session.commit()
+            flash("Сотрудник был успешно изменён.", category='success')
+        except:
+            db.session.rollback()
+            flash("Произошла ошибка при измении данных сотрудника. Повторите попытку.", category='danger')
 
 
 class WorkerExecution(db.Model):

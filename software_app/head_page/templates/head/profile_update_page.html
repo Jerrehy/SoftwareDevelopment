@@ -6,17 +6,31 @@
 {% endblock %}
 <!-- Отображение информации об авторизованном пользователе -->
 {% block content %}
+<form method="POST" class="form-addding" style="color:black">
+{{ worker_update_form.hidden_tag() }}
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-left bg-dark" style="color:white">
     <div align="center">
-        <h1 class="display-4 font-weight-normal" align="center">Начальная страница - начало рабочего процесса</h1>
+        <p class="lead font-weight-normal">При обновлении только одного параметра - остальные копировать</p>
+        <p class="lead font-weight-normal">Кроме фото - его можно оставлять пустым</p>
+        <p class="lead font-weight-normal">
+            Фото работника:<br> {{ that_user.CompanyWorker.photo }} <br> 
+            {{ worker_update_form.user_photo.label() }}
+            {{ worker_update_form.user_photo(class="form-control") }}
+            
+        </p>
+        <p class="lead font-weight-normal">
+            ФИО работника: {{ that_user.CompanyWorker.fio }}<br>
+            {{ worker_update_form.fio.label() }}
+            {{ worker_update_form.fio(class="form-control") }}
+        </p>
+        <p class="lead font-weight-normal">
+            Номер телефона: {{ that_user.CompanyWorker.phone_number }}<br>
+            {{ worker_update_form.phone_number.label() }}
+            {{ worker_update_form.phone_number(class="form-control") }}
+        </p>
         <br>
-        <p {{ "Здесь должно быть фото" }} </p>
-        <p class="lead font-weight-normal">Логин работника: {{ that_user.CompanyWorker.login }}</p>
-        <p class="lead font-weight-normal">ФИО работника: {{ that_user.CompanyWorker.fio }}</p>
-        <p class="lead font-weight-normal">Должность: {{ that_user.WorkerPost.name_worker_post }}</p>
-        <p class="lead font-weight-normal">Заработная плата: {{that_user.WorkerPost.salary }}</p>
-        <p class="lead font-weight-normal">Вид работы: {{ that_user.CompanyWorker.type_work }}</p>
-        <p class="lead font-weight-normal">Номер телефона: {{ that_user.CompanyWorker.phone_number }}</p>
+            {{ worker_update_form.submit_update(class="btn btn-lg btn-block btn-warning") }}
     </div>
 </div>
+</form>
 {% endblock %}
