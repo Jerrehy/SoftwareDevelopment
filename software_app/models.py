@@ -219,6 +219,19 @@ class Task(db.Model):
         return query.all()
 
     @staticmethod
+    def add_task(dateadd, task_laboriousness, id_project, description, duration):
+        new_task = Task(dateadd=dateadd, task_laboriousness=task_laboriousness, id_project=id_project,
+                        description=description, duration=duration)
+
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            flash("Новый задание было успешно добавлено в проект", category='success')
+        except:
+            db.session.rollback()
+            flash("Возникли проблемы с добавление нового задания в проект", category='danger')
+
+    @staticmethod
     def delete_task_by_id(id_task):
         try:
             Task.query.filter_by(id_task=id_task).delete()

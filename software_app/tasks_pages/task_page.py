@@ -52,6 +52,21 @@ def task_view_for_supervisor(id_project):
         all_free_tasks_project = Task.get_all_free_tasks_by_project_id(id_project)
         all_not_free_tasks_project = Task.get_all_not_free_tasks_by_project_id(id_project)
 
+        if task_adder.submit_add.data:
+            Task.add_task(task_adder.date_now.data, task_adder.laboriousness.data, id_project,
+                          task_adder.description.data, task_adder.duration.data)
+            return redirect(url_for('task.task_view_for_supervisor', id_project=id_project))
+
+        elif update_form.submit_update.data:
+            status_for_update = Status.get_status_by_name(update_form.new_status_task.data)
+            WorkerExecution.update_task_execution_by_id(update_form.id_task_for_update, status_for_update.id_status,
+                                                        update_form.new_iteration.data)
+            return redirect(url_for('task.task_view_for_supervisor', id_project=id_project))
+
+        elif delete_form.submit_delete.data:
+            Task.delete_task_by_id(delete_form.id_task_for_delete.data)
+            return redirect(url_for('task.task_view_for_supervisor', id_project=id_project))
+
         return render_template('task/worker_tasks_for_supervisor.html', project_for_view=project_for_view,
                                all_free_tasks_project=all_free_tasks_project, task_adder=task_adder,
                                update_form=update_form, all_not_free_tasks_project=all_not_free_tasks_project,

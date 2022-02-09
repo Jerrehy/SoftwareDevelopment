@@ -61,7 +61,7 @@ class AddProject(FlaskForm):
 
 
 class AddTask(FlaskForm):
-    description = TextAreaField(label='Описание проекта', validators=[DataRequired()])
+    description = TextAreaField(label='Описание задания', validators=[DataRequired()])
     date_now = DateField(label='Дата добавления', validators=[DataRequired()])
     duration = IntegerField(label='Длительность в днях', validators=[DataRequired()])
     laboriousness = IntegerField(label='Трудоёмкость', validators=[DataRequired()])
