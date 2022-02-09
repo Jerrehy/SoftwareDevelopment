@@ -10,12 +10,10 @@
 {{ worker_update_form.hidden_tag() }}
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-left bg-dark" style="color:white">
     <div align="center">
-        <p class="lead font-weight-normal">При обновлении только одного параметра - остальные копировать</p>
-        <p class="lead font-weight-normal">Кроме фото - его можно оставлять пустым</p>
         <p class="lead font-weight-normal">
-            Фото работника:<br> {{ that_user.CompanyWorker.photo }} <br> 
+            Фото работника:<br> <img src="{{that_user.CompanyWorker.photo}}" width="300" height="300"> <br> 
             {{ worker_update_form.user_photo.label() }}
-            {{ worker_update_form.user_photo(class="form-control") }}
+            {{ worker_update_form.user_photo(placeholder_="Ссылка на фото размером приблизительно 300х300", class="form-control") }}
             
         </p>
         <p class="lead font-weight-normal">

@@ -32,7 +32,7 @@ class RegisterForm(FlaskForm):
 
 
 class UpdateWorker(FlaskForm):
-    fio = TextAreaField(label='Новое ФИО:', validators=[DataRequired()])
+    fio = TextAreaField(label='Новое ФИО:')
     phone_number = StringField(label='Новый телефон:')
     user_photo = TextAreaField(label='Новое фото пользователя')
     submit_update = SubmitField(label='Обновить аккаунт')

@@ -24,9 +24,23 @@ def update_profile_page():
     that_user = CompanyWorker.get_worker_by_id_with_position(current_user.get_id())
 
     if worker_update_form.submit_update.data:
-        image = worker_update_form.user_photo.data
-        CompanyWorker.update_company_worker(current_user.get_id(), worker_update_form.fio.data,
-                                            worker_update_form.phone_number.data, image.read())
+        if worker_update_form.fio.data:
+            fio_update = worker_update_form.fio.data
+        else:
+            fio_update = that_user.CompanyWorker.fio
+
+        if worker_update_form.phone_number.data:
+            phone_number_update = worker_update_form.phone_number.data
+        else:
+            phone_number_update = that_user.CompanyWorker.phone_number
+
+        if worker_update_form.user_photo.data:
+            photo_update = worker_update_form.user_photo.data
+        else:
+            photo_update = that_user.CompanyWorker.photo
+
+        CompanyWorker.update_company_worker(current_user.get_id(), fio_update, phone_number_update, photo_update)
+
         return redirect(url_for('head.set_profile_page'))
 
     return render_template('head/profile_update_page.html', that_user=that_user, worker_update_form=worker_update_form)

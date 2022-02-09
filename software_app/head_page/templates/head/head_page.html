@@ -11,7 +11,7 @@
         <h1 class="display-4 font-weight-normal" align="center">Начальная страница - начало рабочего процесса</h1>
         <br>
         {% if current_user.is_authenticated: %}
-        <p {{ "Здесь должно быть фото" }} </p>
+        <img src="{{that_user.CompanyWorker.photo}}" width="300" height="300">
         <p class="lead font-weight-normal">Логин работника: {{ that_user.CompanyWorker.login }}</p>
         <p class="lead font-weight-normal">ФИО работника: {{ that_user.CompanyWorker.fio }}</p>
         <p class="lead font-weight-normal">Должность: {{ that_user.WorkerPost.name_worker_post }}</p>
