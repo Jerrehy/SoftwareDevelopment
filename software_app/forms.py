@@ -64,6 +64,7 @@ class AddTask(FlaskForm):
     description = TextAreaField(label='Описание проекта', validators=[DataRequired()])
     date_now = DateField(label='Дата добавления', validators=[DataRequired()])
     duration = IntegerField(label='Длительность в днях', validators=[DataRequired()])
+    laboriousness = IntegerField(label='Трудоёмкость', validators=[DataRequired()])
     submit_add = SubmitField(label='Добавить задачу')
 
 
@@ -88,3 +89,8 @@ class UpdateProject(FlaskForm):
 class CloseProject(FlaskForm):
     id_project_for_close = HiddenField()
     submit_close = SubmitField(label='Удалить проект')
+
+
+class DeleteTask(FlaskForm):
+    id_task_for_delete = HiddenField()
+    submit_delete = SubmitField(label='Удалить задачу')

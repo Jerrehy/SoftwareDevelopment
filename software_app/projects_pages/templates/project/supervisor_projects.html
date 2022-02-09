@@ -32,6 +32,9 @@
                <td>{{ project.State.name_state }}</td>
                <td>
                   <form method="post" action="{{url_for('project.supervisor_view')}}">
+                     {{ press_form.id_project_for_info(value=project.Project.id_project) }}
+                     {{ press_form.submit(class="btn btn-lg btn-block btn-light") }}
+                     <br>
                      {{ form_update_project.id_project_for_update(value=project.Project.id_project) }}
                      <br>
                      {{ form_update_project.new_state_project.label() }}

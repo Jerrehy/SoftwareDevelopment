@@ -61,6 +61,7 @@ def supervisor_view():
         form_add_project = AddProject()
         form_update_project = UpdateProject()
         form_close_project = CloseProject()
+        press_form = IdProjectByPress()
 
         projects_states = State.get_all_state()
         form_add_project.project_state.choices = [i.name_state for i in projects_states]
@@ -84,9 +85,12 @@ def supervisor_view():
             Project.delete_project_by_id(form_close_project.id_project_for_close.data)
             return redirect(url_for('project.supervisor_view'))
 
+        elif press_form.submit.data:
+            return redirect(url_for('task.task_view_for_supervisor', id_project=press_form.id_project_for_info.data))
+
         return render_template('project/supervisor_projects.html', all_projects=all_projects,
                                form_add_project=form_add_project, form_update_project=form_update_project,
-                               form_close_project=form_close_project)
+                               form_close_project=form_close_project, press_form=press_form)
     else:
         flash('У вас недостаточно прав для доступа к этой странице', category='danger')
         return redirect(url_for('head.set_profile_page'))

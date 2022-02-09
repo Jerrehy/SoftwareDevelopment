@@ -2,7 +2,7 @@
 <!-- Подключение шаблона-фундамента для страницы -->
 {% extends 'head/base.html' %}
 {% block title %}
-Задания для проекта
+Задания для моего проекта
 {% endblock %}
 <!-- Оформление информационного блока -->
 {% block content %}
@@ -10,6 +10,9 @@
    <div class="col-10">
       <h2>Проект "{{ project_for_view.name_project }}"</h2>
       <h2>Дата сдачи: {{ project_for_view.completion_date }}</h2>
+      <br>
+      <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#ModalAddTask">Добавить задание</button>
+      <br>
       <br>
       <h4>Свободные задания</h4>
       <br>
@@ -30,17 +33,9 @@
                <td>{{ task.Task.duration }}</td>
                <td>{{ task.Task.description }}</td>
                <td>
-                  <form method="post" action="{{url_for('project.project_info', id_project=project_for_view.id_project)}}">
-                     {{ activation_form.id_task_for_info(value=task.Task.id_task) }}
-                     {{ activation_form.duration_for_info(value=task.Task.duration) }}
-                     <br>
-                     {{ activation_form.start_date.label() }}
-                     {{ activation_form.start_date(class="form-control") }}
-                     <br>
-                     {{ activation_form.iteration.label() }}
-                     {{ activation_form.iteration(placeholder_="От 1 до 7", class="form-control") }}
-                     <br>
-                     {{ activation_form.submit_add(class="btn btn-lg btn-block btn-warning") }}
+                  <form method="post" action="{{url_for('task.task_view_for_supervisor', id_project=project_for_view.id_project)}}">
+                     {{ delete_form.id_task_for_delete(value=task.Task.id_task) }}
+                     {{ delete_form.submit_delete(class="btn btn-lg btn-block btn-danger") }}
                   </form>
                </td>
             </tr>
@@ -59,6 +54,9 @@
                <th scope="col">Трудоёмкость</th>
                <th scope="col">Дата добавления задачи</th>
                <th scope="col">Длительность выполнения (кол-во дней)</th>
+               <th scope="col">Дата начала исполнения</th>
+               <th scope="col">Дата конца исполнения</th>
+               <th scope="col">Номер итерации</th>
                <th scope="col">Описание задачи</th>
                <th scope="col">Исполнитель</th>
                <th scope="col">Статус задачи</th>
@@ -70,13 +68,64 @@
                <td>{{ task.Task.task_laboriousness }}</td>
                <td>{{ task.Task.dateadd }}</td>
                <td>{{ task.Task.duration }}</td>
+               <td>{{ task.WorkerExecution.start_date }}</td>
+               <td>{{ task.WorkerExecution.finish_date }}</td>
+               <td>{{ task.WorkerExecution.iteration_number }}</td>
                <td>{{ task.Task.description }}</td>
                <td>{{ task.CompanyWorker.fio }}</td>
                <td>{{ task.Status.name_status }}</td>
+               <td>
+                  <form method="post" action="{{url_for('task.task_view_for_supervisor', id_project=project_for_view.id_project)}}">
+                     {{update_form.id_task_for_update(value=task.Task.id_task) }}
+                     <br>
+                     {{ update_form.new_status_task.label() }}
+                     {{ update_form.new_status_task(class="form-control") }}
+                     <br>
+                     {{ update_form.new_iteration.label() }}
+                     {{ update_form.new_iteration(placeholder_="От 1 до 7", class="form-control") }}
+                     <br>
+                     {{ update_form.submit_update(class="btn btn-lg btn-block btn-warning") }}
+                     <br>
+                     {{ delete_form.id_task_for_delete(value=task.Task.id_task) }}
+                     {{ delete_form.submit_delete(class="btn btn-lg btn-block btn-danger") }}
+                  </form>
+               </td>
             </tr>
             {% endfor %}
          </tbody>
       </table>
+   </div>
+</div>
+<div id="ModalAddTask" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title text-secondary">Добавление нового задачи</h4>
+         </div>
+         <div class="modal-body">
+            <form method="POST" class="form-addding" style="color:black">
+               {{ task_adder.hidden_tag() }}
+
+               {{ task_adder.description.label() }}
+               {{ task_adder.description(class="form-control") }}
+               
+               {{ task_adder.date_now.label() }}
+               {{ task_adder.date_now(class="form-control") }}
+
+               {{ task_adder.duration.label() }}
+               {{ task_adder.duration(class="form-control") }}
+
+               {{ task_adder.laboriousness.label() }}
+               {{ task_adder.laboriousness(class="form-control") }}
+
+               <br>
+               {{ task_adder.submit_add(class="btn btn-lg btn-block btn-dark") }}
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-light" data-dismiss="modal">Закрыть</button>
+      </div>
    </div>
 </div>
 {% endblock %}
@@ -92,7 +141,7 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
-               { orderable: true, searchable: true }
+               { orderable: false, searchable: false }
             ],
             language: {
                "processing": "Подождите...",
@@ -129,7 +178,12 @@
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
                { orderable: true, searchable: true },
-               { orderable: true, searchable: true }
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: true, searchable: true },
+               { orderable: false, searchable: false }
             ],
             language: {
                "processing": "Подождите...",

@@ -218,6 +218,16 @@ class Task(db.Model):
         query = query.filter(Task.id_project == id_project)
         return query.all()
 
+    @staticmethod
+    def delete_task_by_id(id_task):
+        try:
+            Task.query.filter_by(id_task=id_task).delete()
+            db.session.commit()
+            flash("Задача была успешно удалена", category='success')
+        except:
+            db.session.rollback()
+            flash("Произошла ошибка при удалении задачи", category='danger')
+
 
 class WorkerPost(db.Model):
     __tablename__ = 'worker_post'
