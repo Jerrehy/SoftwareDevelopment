@@ -276,7 +276,7 @@ class Task(db.Model):
         try:
             db.session.add(new_task)
             db.session.commit()
-            flash("Новый задание было успешно добавлено в проект", category='success')
+            flash("Новое задание было успешно добавлено в проект", category='success')
         except:
             db.session.rollback()
             flash("Возникли проблемы с добавление нового задания в проект", category='danger')
