@@ -31,6 +31,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField(label='Создать аккаунт')
 
 
+# Форма изменения профиля пользователя
 class UpdateWorker(FlaskForm):
     fio = TextAreaField(label='Новое ФИО:')
     phone_number = StringField(label='Новый телефон:')
@@ -45,11 +46,13 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Вход')
 
 
+# Форма для перехода на список заданий по ID проекта
 class IdProjectByPress(FlaskForm):
     id_project_for_info = HiddenField()
     submit = SubmitField(label='Задания проекта')
 
 
+# Форма для получения ID задачи и длительности выполнения по нажатию
 class IdProjectAndTaskByPress(FlaskForm):
     id_task_for_info = HiddenField()
     duration_for_info = HiddenField()
@@ -58,6 +61,7 @@ class IdProjectAndTaskByPress(FlaskForm):
     submit_add = SubmitField(label='Начать выполнение')
 
 
+# Форма добавления нового проекта
 class AddProject(FlaskForm):
     project_name = StringField(label='Название проекта', validators=[DataRequired()])
     project_type = SelectField(label='Тип проекта', choices=['монопроект', 'мультипроект', 'мегапроект'])
@@ -67,6 +71,7 @@ class AddProject(FlaskForm):
     submit_add = SubmitField(label='Добавить проект')
 
 
+# Форма добавления новой задачи в проект
 class AddTask(FlaskForm):
     description = TextAreaField(label='Описание задания', validators=[DataRequired()])
     date_now = DateField(label='Дата добавления', validators=[DataRequired()])
@@ -75,6 +80,7 @@ class AddTask(FlaskForm):
     submit_add = SubmitField(label='Добавить задачу')
 
 
+# Форма изменения задания в исполнении
 class UpdateTaskExecution(FlaskForm):
     id_task_for_update = HiddenField()
     new_status_task = SelectField(label='Новое состояние задания', choices=[])
@@ -82,22 +88,26 @@ class UpdateTaskExecution(FlaskForm):
     submit_update = SubmitField(label='Обновить задачу')
 
 
+# Форма для отказа от исполнения задания
 class RejectTaskExecution(FlaskForm):
     id_task_for_reject = HiddenField()
     submit_reject = SubmitField(label='Отказаться от задачи')
 
 
+# Форма для обновления проекта
 class UpdateProject(FlaskForm):
     id_project_for_update = HiddenField()
     new_state_project = SelectField(label='Новый статус проекта', choices=[])
     submit_update = SubmitField(label='Обновить проект')
 
 
+# Форма для удаления (закрытия) проекта
 class CloseProject(FlaskForm):
     id_project_for_close = HiddenField()
     submit_close = SubmitField(label='Удалить проект')
 
 
+# Форма для удаления задачи
 class DeleteTask(FlaskForm):
     id_task_for_delete = HiddenField()
     submit_delete = SubmitField(label='Удалить задачу')

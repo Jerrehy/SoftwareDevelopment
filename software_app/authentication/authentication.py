@@ -3,26 +3,34 @@ from software_app.models import WorkerPost, CompanyWorker
 from software_app.forms import RegisterForm, LoginForm
 from flask_login import login_user, logout_user
 
+# Создание узла с регистрацией, авторизацией и выходом из аккаунта
 authentication = Blueprint('authentication', __name__, template_folder="templates")
 
 
-# Маршрут с логикой организации регистрации на сайте через форму с ошибками и добавлением в БД
+# Организация регистрации на сайте через форму с ошибками и добавлением в БД
 @authentication.route('/register', methods=['GET', 'POST'])
 def register_page():
+    # Форма регистрации
     reg_form = RegisterForm()
+
+    # Получений всех позиций рабочих из БД
     app_roles = WorkerPost.get_all_worker_posts()
 
+    # Заполнение списка полученных позиций в форму регистрации
     reg_form.position.choices = [i.name_worker_post for i in app_roles]
 
     # Проверка нажатия кнопки "Создать аккаунт"
     if reg_form.validate_on_submit():
+
+        # Получения id позиции из таблицы БД по названию позиции
         post = WorkerPost.get_worker_post_by_name(reg_form.position.data)
 
+        # Добавление нового рабочего
         CompanyWorker.add_company_worker(reg_form.fio.data, reg_form.type_work.data, reg_form.phone_number.data,
-                                         reg_form.login.data, reg_form.password1.data, post.id_worker_post)
+                                         reg_form.login.data, reg_form.password1.data, post.id_worker_post,
+                                         reg_form.user_photo.data)
 
-        # reg_form.user_photo.data
-
+        # При удачной регистрации переход на страницу авторизации
         return redirect(url_for('authentication.login_page'))
 
     # Механизм вывода ошибок при создании нового пользователя
@@ -34,7 +42,7 @@ def register_page():
     return render_template('authentication/register.html', reg_form=reg_form)
 
 
-# Маршрут с логикой авторизации на сайте с обращением к таблице пользователей в БД
+# Логикой авторизации на сайте с обращением к таблице пользователей в БД
 # При успешном входе в переменной session сохраняется идентификатор должности пользователя
 @authentication.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -49,7 +57,6 @@ def login_page():
                 login_user(attempted_user)
                 flash(f'Вход выполнен успешно! Вы зашли как {attempted_user.login}', category='success')
                 session['post'] = attempted_user.id_worker_post
-                session['login'] = attempted_user.login
             else:
                 flash('Пароль неверный! Попробуйте снова', category='danger')
 
@@ -64,10 +71,9 @@ def login_page():
 # Обнуление переменной session['role'] и возвращение на главную страницу
 @authentication.route('/logout')
 def logout_page():
-    # Выход пользователя из аккаунта
+    # Выход работника из аккаунта
     logout_user()
-    # Очистка текущей роли пользователя
-    session.pop('login', None)
+    # Очистка позиции работника
     session.pop('post', None)
     # Очистка куки с дополнительными данными о пользователе
     session.clear()
