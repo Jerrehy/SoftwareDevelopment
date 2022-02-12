@@ -3,7 +3,7 @@ class Config:
     dialect = 'postgresql'
     username = 'postgres'
     password = 'Qwerty7'
-    host = 'localhost'
+    host = 'ec2-63-32-30-191.eu-west-1.compute.amazonaws.com'
     db_name = 'software_development'
 
     # Настройки для экземляра: секретный ключ запуска и путь к БД
